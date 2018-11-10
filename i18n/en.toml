@@ -29,7 +29,7 @@ other = "Access our team drive if you'd like to take a look at the Istio technic
 other = "If you'd like to contribute to the Istio project, consider participating in our working groups"
 
 [slack_desc]
-other = "Interactively discuss development issues with the Istio community on Slack (invitation-only)"
+other = "Interactively discuss development issues with the Istio community on Slack (Developers only, see FAQ)"
 
 [report_site_bugs]
 other = "Report Site Bugs"
@@ -143,7 +143,7 @@ other = "Latest Release"
 other = "Helm Chart"
 
 [partner_component_istio_versions]
-other = "Tested by %s with These Istio Versions"
+other = "Tested by %s with these Istio Versions"
 
 [partner_component_supported_templates]
 other = "Supported Templates"

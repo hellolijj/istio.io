@@ -70,6 +70,10 @@ for the list of supported keys in `constraints` and `properties`.
 
 ## Authorization permissive mode
 
+The authorization permissive mode is an experimental feature in Istio's 1.1 release. Its interface can change in future releases.
+You can skip enabling the permissive mode and directly [enable Istio authorization](#enabling-istio-authorization)
+if you do not want to try out the permissive mode feature.
+
 This section shows how to use authorization permissive mode in below two scenarios:
 
     * In environment without authorization, test whether it's safe to enable authorization.
@@ -89,7 +93,7 @@ Before you start, please make sure that you have finished [preparation task](#be
     {{< text bash >}}
     $ kubectl apply -f - <<EOF
     apiVersion: "rbac.istio.io/v1alpha1"
-    kind: RbacConfig
+    kind: ClusterRbacConfig
     metadata:
       name: default
     spec:
