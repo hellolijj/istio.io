@@ -97,7 +97,7 @@ to hold the configuration of the NGINX server:
 1.  Deploy the NGINX server:
 
     {{< text bash >}}
-    $ kubectl apply -f - <<EOF
+    $ cat <<EOF | istioctl kube-inject -f - | kubectl apply -f -
     apiVersion: v1
     kind: Service
     metadata:
@@ -235,7 +235,7 @@ to hold the configuration of the NGINX server:
     {{< /text >}}
 
 1.  Follow the instructions in
-    [Determining the ingress IP and ports](https://istio.io/docs/tasks/traffic-management/ingress/#determining-the-ingress-ip-and-ports)
+    [Determining the ingress IP and ports](/docs/tasks/traffic-management/ingress/#determining-the-ingress-ip-and-ports)
     to define the `SECURE_INGRESS_PORT` and `INGRESS_HOST` environment variables.
 
 1.  Access the NGINX service from outside the cluster. Note that the correct certificate is returned by the server and

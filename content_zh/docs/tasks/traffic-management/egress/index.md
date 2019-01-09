@@ -7,7 +7,7 @@ keywords: [流量管理,egress]
 
 缺省情况下，Istio 服务网格内的 Pod，由于其 iptables 将所有外发流量都透明的转发给了 Sidecar，所以这些集群内的服务无法访问集群之外的 URL，而只能处理集群内部的目标。
 
-本文的任务描述了如何将外部服务暴露给 Istio 集群中的客户端。你将会学到如何通过定义 [`ServiceEntry`](/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry) 来调用外部服务；或者简单的对 Istio 进行配置，要求其直接放行对特定 IP 范围的访问。
+本文的任务描述了如何将外部服务暴露给 Istio 集群中的客户端。你将会学到如何通过定义 [`ServiceEntry`](/zh/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry) 来调用外部服务；或者简单的对 Istio 进行配置，要求其直接放行对特定 IP 范围的访问。
 
 ## 开始之前
 
@@ -65,7 +65,7 @@ keywords: [流量管理,egress]
 1.  创建一个 `ServiceEntry` 以及 `VirtualService`，允许访问外部 HTTPS 服务。注意：包括 HTTPS 在内的 TLS 协议，在 `ServiceEntry` 之外，还需要创建 TLS `VirtualService`。
 
     {{< text bash >}}
-    $ kubectl exec -it $SOURCE_POD -c sleep bash
+    $ kubectl exec -it $SOURCE_POD -c sleep sh
     {{< /text >}}
 
 1.  向外部 HTTP 服务发出请求：
@@ -76,8 +76,8 @@ keywords: [流量管理,egress]
 
 ### 配置外部 HTTPS 服务
 
-1.  创建一个 `ServiceEntry` 和一个 `VirtualService` 以允许访问外部 HTTPS 服务。请注意，
-    对于 TLS 协议（包括 HTTPS），除了 `ServiceEntry` 之外，还需要 `VirtualService`。 `VirtualService` 必须在 `match` 子句中包含 `tls` 规则和 `sni_hosts` 以启用 SNI 路由。
+1.  创建一个 `ServiceEntry` 以允许访问外部 HTTPS 服务。
+    对于 TLS 协议（包括 HTTPS），除了 `ServiceEntry` 之外，还需要 `VirtualService`。 没有 `VirtualService`, `ServiceEntry` 所暴露的服务将不被定义。`VirtualService` 必须在 `match` 子句中包含 `tls` 规则和 `sni_hosts` 以启用 SNI 路由。
 
     {{< text bash >}}
     $ kubectl apply -f - <<EOF
@@ -119,7 +119,7 @@ keywords: [流量管理,egress]
 1.  执行 `sleep service` 源 pod：
 
     {{< text bash >}}
-    $ kubectl exec -it $SOURCE_POD -c sleep bash
+    $ kubectl exec -it $SOURCE_POD -c sleep sh
     {{< /text >}}
 
 1.  向外部 HTTPS 服务发出请求：
@@ -135,7 +135,7 @@ keywords: [流量管理,egress]
 1. 在测试 Pod 内部，使用 `curl` 调用 httpbin.org 这一外部服务的 `/delay` 端点：
 
     {{< text bash >}}
-    $ kubectl exec -it $SOURCE_POD -c sleep bash
+    $ kubectl exec -it $SOURCE_POD -c sleep sh
     $ time curl -o /dev/null -s -w "%{http_code}\n" http://httpbin.org/delay/5
     200
 
@@ -169,7 +169,7 @@ keywords: [流量管理,egress]
 1.  等待几秒钟之后，再次发起 _curl_ 请求：
 
     {{< text bash >}}
-    $ kubectl exec -it $SOURCE_POD -c sleep bash
+    $ kubectl exec -it $SOURCE_POD -c sleep sh
     $ time curl -o /dev/null -s -w "%{http_code}\n" http://httpbin.org/delay/5
     504
 

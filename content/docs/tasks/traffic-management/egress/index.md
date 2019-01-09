@@ -16,32 +16,7 @@ You'll learn how to enable access to external services by defining
 [`ServiceEntry`](/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry) configurations,
 or alternatively, to bypass the Istio proxy for a specific range of IPs.
 
-## Before you begin
-
-*   Setup Istio by following the instructions in the [Installation guide](/docs/setup/).
-
-*   Start the [sleep]({{< github_tree >}}/samples/sleep) sample
-    which you use as a test source for external calls.
-
-    If you have enabled [automatic sidecar injection](/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection), deploy the `sleep` application:
-
-    {{< text bash >}}
-    $ kubectl apply -f @samples/sleep/sleep.yaml@
-    {{< /text >}}
-
-    Otherwise, you have to manually inject the sidecar before deploying the `sleep` application:
-
-    {{< text bash >}}
-    $ kubectl apply -f <(istioctl kube-inject -f @samples/sleep/sleep.yaml@)
-    {{< /text >}}
-
-    Note that any pod that you can `exec` and `curl` from will do for the procedures below.
-
-*   Set the `SOURCE_POD` environment variable to the deployed `sleep` pod:
-
-    {{< text bash >}}
-    $ export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata.name})
-    {{< /text >}}
+{{< boilerplate before-you-begin-egress >}}
 
 ## Configuring Istio external services
 
@@ -75,7 +50,7 @@ from within your Istio cluster. This task shows you how to access an external HT
 1.  Exec into the `sleep service` source pod:
 
     {{< text bash >}}
-    $ kubectl exec -it $SOURCE_POD -c sleep bash
+    $ kubectl exec -it $SOURCE_POD -c sleep sh
     {{< /text >}}
 
 1.  Make a request to the external HTTP service:
@@ -131,7 +106,7 @@ from within your Istio cluster. This task shows you how to access an external HT
 1.  Exec into the `sleep service` source pod:
 
     {{< text bash >}}
-    $ kubectl exec -it $SOURCE_POD -c sleep bash
+    $ kubectl exec -it $SOURCE_POD -c sleep sh
     {{< /text >}}
 
 1.  Make a request to the external HTTPS service:
@@ -150,7 +125,7 @@ In this example, you set a timeout rule on calls to the `httpbin.org` service.
 1.  From inside the pod being used as the test source, make a _curl_ request to the `/delay` endpoint of the httpbin.org external service:
 
     {{< text bash >}}
-    $ kubectl exec -it $SOURCE_POD -c sleep bash
+    $ kubectl exec -it $SOURCE_POD -c sleep sh
     $ time curl -o /dev/null -s -w "%{http_code}\n" http://httpbin.org/delay/5
     200
 
@@ -184,7 +159,7 @@ In this example, you set a timeout rule on calls to the `httpbin.org` service.
 1.  Wait a few seconds, then make the _curl_ request again:
 
     {{< text bash >}}
-    $ kubectl exec -it $SOURCE_POD -c sleep bash
+    $ kubectl exec -it $SOURCE_POD -c sleep sh
     $ time curl -o /dev/null -s -w "%{http_code}\n" http://httpbin.org/delay/5
     504
 
@@ -217,7 +192,9 @@ $ helm template install/kubernetes/helm/istio <the flags you used to install Ist
 Note that you should use the same Helm command you used [to install Istio](/docs/setup/kubernetes/helm-install),
 in particular, the same value of the `--namespace` flag. In addition to the flags you used to install Istio, add `--set global.proxy.includeIPRanges="10.0.0.1/24" -x templates/sidecar-injector-configmap.yaml`.
 
-Redeploy the `sleep` application as described in the [Before you begin](/docs/tasks/traffic-management/egress/#before-you-begin) section.
+Redeploy the `sleep` application as described in the [Before you begin](#before-you-begin) section.
+
+{{< warning_icon >}} Make sure to remove the previously deployed `ServiceEntry` and `VirtualService`.
 
 ### Set the value of `global.proxy.includeIPRanges`
 

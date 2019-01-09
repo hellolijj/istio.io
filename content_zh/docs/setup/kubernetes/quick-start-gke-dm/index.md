@@ -24,17 +24,11 @@ keywords: [kubernetes,gke]
 
 为了设置以上内容，如下图所示，在 [Cloud Console](https://console.cloud.google.com/iam-admin/iam/project) 上导航到 **IAM** 章节，并找到你的形如 `projectNumber-compute@developer.gserviceaccount.com` 的默认 GCE/GKE 服务账号。服务账号默认应该仅是 **Editor** 角色。然后在这个账户的 **Roles** 下拉列表中，找到 **Kubernetes Engine** 组，并选择 **Kubernetes Engine Admin** 角色。你的账户将会变成**多重身份**。
 
-{{< image width="100%" ratio="22.94%"
-link="/docs/setup/kubernetes/quick-start-gke-dm/dm_gcp_iam.png"
-caption="GKE-IAM Service"
->}}
+{{< image link="/docs/setup/kubernetes/quick-start-gke-dm/dm_gcp_iam.png" caption="GKE-IAM Service" >}}
 
 然后添加 `Kubernetes Engine Admin` 角色:
 
-{{< image width="70%" ratio="65.04%"
-link="/docs/setup/kubernetes/quick-start-gke-dm/dm_gcp_iam_role.png"
-caption="GKE-IAM Role"
->}}
+{{< image width="70%" link="/docs/setup/kubernetes/quick-start-gke-dm/dm_gcp_iam_role.png" caption="GKE-IAM Role" >}}
 
 ## 安装
 
@@ -47,17 +41,13 @@ caption="GKE-IAM Role"
     就像其他教程中的“如何访问已安装的功能”一样，我们也建议保留默认设置。工具会默认创建一个特殊设置的 GKE alpha cluster，然后安装 Istio [控制平面](/zh/docs/concepts/what-is-istio/#架构)、
     [Bookinfo](/zh/docs/examples/bookinfo/) 样例应用、
     [Grafana](/zh/docs/tasks/telemetry/using-istio-dashboard/) 、
-    [Prometheus](/zh/docs/tasks/telemetry/querying-metrics/) 、
-    [ServiceGraph](/zh/docs/tasks/telemetry/servicegraph/) 和
+    [Prometheus](/zh/docs/tasks/telemetry/querying-metrics/) 和
     [跟踪](/zh/docs/tasks/telemetry/distributed-tracing/) 。
     接下来你可以了解一下怎样访问所有这些功能。脚本只在 `default` 的命名空间中启用 Istio 自动注入。
 
 1.  点击 **Deploy**:
 
-    {{< image width="100%" ratio="67.17%"
-    link="/docs/setup/kubernetes/quick-start-gke-dm/dm_launcher.png"
-    caption="GKE-Istio Launcher"
-    >}}
+    {{< image link="/docs/setup/kubernetes/quick-start-gke-dm/dm_launcher.png" caption="GKE-Istio Launcher" >}}
 
 等 Istio 完全部署好。注意这会消耗5分钟左右。
 
@@ -99,7 +89,6 @@ deploy/istio-sidecar-injector     1         1         1            1           4
 deploy/istio-statsd-prom-bridge   1         1         1            1           4m
 deploy/istio-telemetry            1         1         1            1           4m
 deploy/prometheus                 1         1         1            1           4m
-deploy/servicegraph               1         1         1            1           4m
 {{< /text >}}
 
 现在确认 Bookinfo 样例应用也已经安装好：
@@ -127,10 +116,7 @@ istio-ingressgateway   LoadBalancer   10.59.251.109   35.194.26.85   80:31380/TC
 
 你也可以在 [Cloud Console](https://console.cloud.google.com/kubernetes/workload) 中的 **Kubernetes Engine -> Workloads** 章节找到这些：
 
-{{< image width="70%" ratio="143.91%"
-    link="/docs/setup/kubernetes/quick-start-gke-dm/dm_kubernetes_workloads.png"
-    caption="GKE-Workloads"
-    >}}
+{{< image width="70%" link="/docs/setup/kubernetes/quick-start-gke-dm/dm_kubernetes_workloads.png" caption="GKE-Workloads"  >}}
 
 ### 访问 Bookinfo 样例
 
@@ -143,10 +129,7 @@ istio-ingressgateway   LoadBalancer   10.59.251.109   35.194.26.85   80:31380/TC
 
 1.  确认一下你可以访问 Bookinfo `http://${GATEWAY_URL}/productpage`:
 
-    {{< image width="100%" ratio="45.04%"
-    link="/docs/setup/kubernetes/quick-start-gke-dm/dm_bookinfo.png"
-    caption="Bookinfo"
-    >}}
+    {{< image link="/docs/setup/kubernetes/quick-start-gke-dm/dm_bookinfo.png" caption="Bookinfo" >}}
 
 1.  现在可以给它制造点流量：
 
@@ -176,10 +159,7 @@ http://localhost:3000/dashboard/db/istio-dashboard
 
 你应该可以看到一些你之前发送的请求的统计信息。
 
-{{< image width="100%" ratio="48.49%"
-    link="/docs/setup/kubernetes/quick-start-gke-dm/dm_grafana.png"
-    caption="Grafana"
-    >}}
+{{< image link="/docs/setup/kubernetes/quick-start-gke-dm/dm_grafana.png" caption="Grafana" >}}
 
 更多关于 Grafana 插件的细节，请点击[关于 Grafana 插件](/zh/docs/tasks/telemetry/using-istio-dashboard/#关于-grafana-插件)。
 
@@ -197,33 +177,9 @@ $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=
 http://localhost:9090/graph
 {{< /text >}}
 
-{{< image width="100%" ratio="43.88%"
-    link="/docs/setup/kubernetes/quick-start-gke-dm/dm_prometheus.png"
-    caption="Prometheus"
-    >}}
+{{< image link="/docs/setup/kubernetes/quick-start-gke-dm/dm_prometheus.png" caption="Prometheus" >}}
 
 更多关于 Prometheus 插件的细节，请点击[关于 Prometheus 插件](/zh/docs/tasks/telemetry/querying-metrics/#关于-prometheus-的附加组件)。
-
-### ServiceGraph
-
-建立一个 ServiceGraph 通道：
-
-{{< text bash >}}
-$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') 8088:8088 &
-{{< /text >}}
-
-你可以在下面的地址查看 Bookinfo 服务拓扑
-
-{{< text plain >}}
-http://localhost:8088/dotviz
-{{< /text >}}
-
-{{< image width="100%" ratio="53.33%"
-    link="/docs/setup/kubernetes/quick-start-gke-dm/dm_servicegraph.png"
-    caption="ServiceGraph"
-    >}}
-
-更多关于 ServiceGraph 插件的细节，请点击[关于 ServiceGraph 插件](/zh/docs/tasks/telemetry/servicegraph/#关于-servicegraph-附加组件)。
 
 ## 追踪
 
@@ -235,12 +191,9 @@ $ kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=
 
 你就可以在 [http://localhost:16686](http://localhost:16686) 查看之前的追踪统计信息
 
-{{< image width="100%" ratio="42.35%"
-    link="/docs/setup/kubernetes/quick-start-gke-dm/dm-tracing.png"
-    caption="Tracing Dashboard"
-    >}}
+{{< image link="/docs/setup/kubernetes/quick-start-gke-dm/dm-tracing.png" caption="Tracing Dashboard" >}}
 
-更多关于追踪的细节，请点击[了解一下发生了什么](/zh/docs/tasks/telemetry/distributed-tracing/#发生了什么)。
+更多关于追踪的细节，请点击[了解一下发生了什么](/zh/docs/tasks/telemetry/distributed-tracing/overview/#understanding-what-happened)。
 
 ## 卸载
 

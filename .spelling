@@ -9,10 +9,12 @@
 1.x
 10s
 123456789012.my
+14.60
+15.30
 1qps
 2x
-22.99ms
-24.13ms
+22.99
+24.13
 3s
 404s
 4s
@@ -50,6 +52,7 @@ CIDRs
 CIOs
 Cilium
 cli
+CoreDNS
 Costin
 CSRs
 Chrony
@@ -110,6 +113,7 @@ Kubernetes
 L3-4
 L4-L6
 LibreSSL
+LightStep
 Lyft
 macOS
 Manolache
@@ -161,6 +165,8 @@ TLS-secured
 Tcpdump
 Tigera
 TopicList
+UID
+UIDs
 Undeploy
 VMware
 VM-based
@@ -195,6 +201,7 @@ accesslogs
 accounts.my
 addon
 addons
+add-ons
 strongSwan
 admissionregistration
 admissionregistration.k8s.io
@@ -420,6 +427,7 @@ uncomment
 uncommented
 unencrypted
 unmanaged
+unsampled
 untrusted
 uptime
 url
@@ -446,6 +454,7 @@ whitelists
 wikipedia
 wikipedia.org
 wildcard
+wildcards
 wildcarded
 www.google.com
 x-envoy-upstream-rq-timeout-ms
@@ -496,6 +505,7 @@ quo
 rethink
 reimplement
 sidecar
+subnet
 subnets
 touchpoints
 tunneling
@@ -529,6 +539,9 @@ deployment
 webhook
 Keycloak
 OpenID
+Istioctl
+Boilerplates
+boilerplates
 
  - search.md
 searchresults
@@ -536,4 +549,3 @@ gcse
 MB
 CPU
 CPUs
-add-ons
